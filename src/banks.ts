@@ -44,7 +44,7 @@ export class Bank implements BankType {
      * @returns true if the account number is valid, false otherwise
      */
     private isAccountNumberValid(accountNumber: number): boolean {
-        return accountNumber.toString().length === 10 && accountNumber.toString().startsWith("1234567890");
+        return accountNumber.toString().length === 10;
     }
 
     /**
@@ -93,6 +93,9 @@ export class Bank implements BankType {
         if (!account) {
             throw new Error("Account not found");
         }
+        if (amount < 0) {
+            throw new Error("Amount must be positive");
+        }
         account.balance += amount;
     }
 
@@ -105,6 +108,9 @@ export class Bank implements BankType {
         const account = this.findAccount(accountNumber);
         if (!account) {
             throw new Error("Account not found");
+        }
+        if (account.balance < amount) {
+            throw new Error("Insufficient funds");
         }
         account.balance -= amount;
     }
